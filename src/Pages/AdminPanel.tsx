@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../Components/Navbar";
-import UserList from "../Components/UserTable";
+import Navbar from "../components/Navbar";
+import UserList from "../components/UserTable";
 
 const AdminPanel = () => {
   return (
