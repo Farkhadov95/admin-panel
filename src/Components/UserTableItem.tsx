@@ -1,16 +1,22 @@
 import { Checkbox, Td, Tr } from "@chakra-ui/react";
+import { User } from "../types/user";
 
-const UserTableItem = () => {
+type UserProp = {
+  user: User;
+};
+
+const UserTableItem = ({ user }: UserProp) => {
+  const { _id, email, logTime, regTime, isActive } = user;
   return (
     <Tr>
       <Td>
         <Checkbox />
       </Td>
-      <Td>ID number</Td>
-      <Td>Email</Td>
-      <Td>Last Login Time</Td>
-      <Td>Registration Time</Td>
-      <Td>Status</Td>
+      <Td>{_id}</Td>
+      <Td>{email}</Td>
+      <Td>{logTime.toLocaleString()}</Td>
+      <Td>{regTime.toLocaleString()}</Td>
+      <Td>{isActive ? "Active" : "Blocked"}</Td>
     </Tr>
   );
 };
