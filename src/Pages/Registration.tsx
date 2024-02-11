@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../services/api-client";
+import { Link, useNavigate } from "react-router-dom";
 
 type FormValue = {
   email: string;
@@ -16,7 +17,7 @@ type FormValue = {
   passwordConf: string;
 };
 
-const signUp = (data: FormValue) => {
+const signUp = (data: FormValue, onSuccess: () => void) => {
   apiClient
     .post("/regs", {
       email: data.email,
@@ -26,6 +27,7 @@ const signUp = (data: FormValue) => {
       console.log(res.data);
       const token = res.data.token;
       localStorage.setItem("admin-token", token);
+      onSuccess();
     })
     .catch((err) => console.log(err));
 };
@@ -33,10 +35,14 @@ const signUp = (data: FormValue) => {
 const Registration = () => {
   const { register, handleSubmit, formState } = useForm<FormValue>();
   const { errors } = formState;
+  const navigate = useNavigate();
+  const transferOnSuccess = () => {
+    navigate("/admin");
+  };
 
   const onSubmit = (data: FormValue) => {
     console.log(data);
-    signUp(data);
+    signUp(data, transferOnSuccess);
   };
 
   return (
@@ -125,7 +131,9 @@ const Registration = () => {
             <FormErrorMessage>{errors.passwordConf?.message}</FormErrorMessage>
           </FormControl>
           <Box display={"flex"} justifyContent={"space-between"}>
-            <Button>Back</Button>
+            <Button as={Link} to={"/"}>
+              Back
+            </Button>
             <Input
               as={Button}
               width={"fit-content"}

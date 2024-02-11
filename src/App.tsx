@@ -1,20 +1,21 @@
 // import { Box } from "@chakra-ui/react";
-// import Navbar from "./Components/Navbar";
-// import Toolbar from "./Components/Toolbar";
-// import UserTable from "./Components/UserTable";
-import Registration from "./Pages/Registration";
 
-function App() {
-  return (
-    <>
-      {/* <Navbar />
-      <Box padding={10}>
-        <Toolbar />
-        <UserTable />
-      </Box> */}
-      <Registration />
-    </>
-  );
-}
+// import Registration from "./Pages/Registration";
+// import Navbar from "./components/Navbar";
+// import Toolbar from "./components/Toolbar";
+// import UserTable from "./components/UserTable";
 
-export default App;
+// function App() {
+//   return (
+//     <>
+//       <Navbar />
+//       <Box padding={10}>
+//         <Toolbar />
+//         <UserTable />
+//       </Box>
+//       <Registration />
+//     </>
+//   );
+// }
+
+// export default App;
