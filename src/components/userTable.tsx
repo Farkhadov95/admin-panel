@@ -7,7 +7,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import UserTableItem from "./UserTableItem";
+import UserTableItem from "./userTableItem";
 import { useEffect } from "react";
 import useStore from "../store/store";
 import { UserSelect, Users } from "../types/user";
