@@ -86,14 +86,9 @@ const Login = () => {
             <Input
               {...register("password", {
                 required: "This field is required",
-                minLength: {
-                  value: 5,
-                  message: "Min length is 5",
-                },
               })}
               placeholder="Password"
               required
-              minLength={5}
               maxLength={255}
               type="password"
             />

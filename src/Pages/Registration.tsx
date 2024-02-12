@@ -87,15 +87,9 @@ const Registration = () => {
             <Input
               {...register("password", {
                 required: "This field is required",
-                minLength: {
-                  value: 5,
-                  message: "Min length is 5",
-                },
               })}
               placeholder="Password"
               type="password"
-              minLength={5}
-              maxLength={255}
             />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
@@ -104,15 +98,9 @@ const Registration = () => {
             <Input
               {...register("passwordConf", {
                 required: "This field is required",
-                minLength: {
-                  value: 5,
-                  message: "Min length is 5",
-                },
               })}
               placeholder="Password"
               type="password"
-              minLength={5}
-              maxLength={255}
             />
             <FormErrorMessage>{errors.passwordConf?.message}</FormErrorMessage>
           </FormControl>
