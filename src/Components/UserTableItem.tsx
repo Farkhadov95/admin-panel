@@ -4,14 +4,15 @@ import useStore from "../store/store";
 
 type UserProp = {
   user: User;
+  isChecked: boolean;
 };
 
-const UserTableItem = ({ user }: UserProp) => {
+const UserTableItem = ({ user, isChecked }: UserProp) => {
   const { _id, email, logTime, regTime, isActive } = user;
   const { addUser, removeUser } = useStore();
   const handleCheckbox = (isChecked: boolean) => {
     if (isChecked) {
-      addUser({ id: _id, isActive: isChecked });
+      addUser({ _id: _id, isActive: isChecked });
     } else {
       removeUser(_id);
     }
@@ -19,7 +20,10 @@ const UserTableItem = ({ user }: UserProp) => {
   return (
     <Tr>
       <Td>
-        <Checkbox onChange={(e) => handleCheckbox(e.target.checked)} />
+        <Checkbox
+          isChecked={isChecked}
+          onChange={(e) => handleCheckbox(e.target.checked)}
+        />
       </Td>
       <Td>{_id}</Td>
       <Td>{email}</Td>

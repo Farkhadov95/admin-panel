@@ -1,7 +1,12 @@
 import { Button, HStack, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    sessionStorage.removeItem("currentUser");
+    navigate("/");
+  };
   return (
     <HStack
       padding={10}
@@ -18,7 +23,13 @@ const Navbar = () => {
       >
         Admin Panel
       </Text>
-      <Button as={Link} to={"/"} fontWeight={"Bold"} textDecoration={"none"}>
+      <Button
+        as={Link}
+        to={"/"}
+        fontWeight={"Bold"}
+        textDecoration={"none"}
+        onClick={() => handleLogout()}
+      >
         Exit
       </Button>
     </HStack>

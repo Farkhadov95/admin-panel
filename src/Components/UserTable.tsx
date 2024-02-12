@@ -8,46 +8,29 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import UserTableItem from "./UserTableItem";
-import apiClient from "../services/api-client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useStore from "../store/store";
-
-type User = {
-  email: string;
-  isActive: boolean;
-  logTime: Date;
-  regTime: Date;
-  password: string;
-  _id: string;
-  _v: number;
-};
-
-const getUsers = (onSuccess: React.Dispatch<React.SetStateAction<User[]>>) => {
-  const token = localStorage.getItem("admin-token");
-  if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
-
-  const result = apiClient
-    .get("/regs")
-    .then((res) => {
-      console.log(res.data);
-      onSuccess(res.data);
-      return res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-      return [];
-    });
-
-  return result;
-};
+import { Users } from "../types/user";
+import { useNavigate } from "react-router-dom";
+import { getUsers } from "../services/api-client";
 
 const UserTable = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const selectedUsers = useStore();
-  console.log(selectedUsers);
+  const { addAllUsers, allUsers, selectedUsers } = useStore();
+  const navigate = useNavigate();
+
+  const checkCurrentUser = (users: Users) => {
+    const currentUserID = sessionStorage.getItem("currentUser");
+    const isUser = users.some((user) => user._id === currentUserID);
+    if (!isUser) navigate("/");
+    return isUser;
+  };
+
+  const isIdAvailable = (id: string) =>
+    selectedUsers.some((user) => user._id === id);
+
   useEffect(() => {
-    getUsers(setUsers);
-  }, []);
+    getUsers(addAllUsers, checkCurrentUser);
+  }, [addAllUsers]);
 
   return (
     <>
@@ -64,8 +47,12 @@ const UserTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {users.map((user) => (
-              <UserTableItem key={user?._id} user={user} />
+            {allUsers.map((user) => (
+              <UserTableItem
+                key={user?._id}
+                user={user}
+                isChecked={isIdAvailable(user._id)}
+              />
             ))}
           </Tbody>
           <Tfoot></Tfoot>

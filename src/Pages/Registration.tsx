@@ -8,39 +8,20 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import apiClient from "../services/api-client";
 import { Link, useNavigate } from "react-router-dom";
-
-type FormValue = {
-  email: string;
-  password: string;
-  passwordConf: string;
-};
-
-const signUp = (data: FormValue, onSuccess: () => void) => {
-  apiClient
-    .post("/regs", {
-      email: data.email,
-      password: data.password,
-    })
-    .then((res) => {
-      console.log(res.data);
-      const token = res.data.token;
-      localStorage.setItem("admin-token", token);
-      onSuccess();
-    })
-    .catch((err) => console.log(err));
-};
+import { SignUpForm, User } from "../types/user";
+import { signUp } from "../services/api-client";
 
 const Registration = () => {
-  const { register, handleSubmit, formState } = useForm<FormValue>();
+  const { register, handleSubmit, formState } = useForm<SignUpForm>();
   const { errors } = formState;
   const navigate = useNavigate();
-  const transferOnSuccess = () => {
+  const transferOnSuccess = (user: User) => {
+    sessionStorage.setItem("currentUser", user._id);
     navigate("/admin");
   };
 
-  const onSubmit = (data: FormValue) => {
+  const onSubmit = (data: SignUpForm) => {
     console.log(data);
     signUp(data, transferOnSuccess);
   };

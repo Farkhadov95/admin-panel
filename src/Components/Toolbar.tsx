@@ -6,10 +6,10 @@ import {
   MdLockOpen,
 } from "react-icons/md";
 import useStore from "../store/store";
-import apiClient from "../services/api-client";
+import { apiClient } from "../services/api-client";
 
 type UserStatus = {
-  id: string;
+  _id: string;
   isActive: boolean;
 };
 
@@ -50,7 +50,7 @@ const dispatchDeleteUsers = (data: string[]) => {
 };
 
 const Toolbar = () => {
-  const { selectedUsers } = useStore();
+  const { selectedUsers, selectAll, allUsers } = useStore();
   const changeUsersStatus = (status: boolean) => {
     const users = selectedUsers;
 
@@ -59,14 +59,19 @@ const Toolbar = () => {
       return user;
     });
     dispatchStatusChange(users);
-    console.log(users);
     console.log(selectedUsers);
   };
 
   const deleteUsers = () => {
-    const usersIds = selectedUsers.map((user) => user.id);
+    const usersIds = selectedUsers.map((user) => user._id);
     dispatchDeleteUsers(usersIds);
     console.log(usersIds);
+  };
+
+  const handleSelect = () => {
+    const users = allUsers;
+    const adaptedUsers = users.map(({ _id, isActive }) => ({ _id, isActive }));
+    selectAll(adaptedUsers);
   };
 
   return (
@@ -76,7 +81,7 @@ const Toolbar = () => {
       display={"flex"}
       justifyContent={"space-between"}
     >
-      <Button bgColor={"grey"} color={"white"}>
+      <Button bgColor={"grey"} color={"white"} onClick={handleSelect}>
         <PiSelectionAllFill />
         <Text paddingLeft={1}>Select all</Text>
       </Button>

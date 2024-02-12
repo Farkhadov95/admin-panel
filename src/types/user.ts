@@ -9,3 +9,14 @@ export type User = {
   };
 
 export type Users = User[];
+
+export type SignUpForm = {
+  email: string;
+  password: string;
+  passwordConf: string;
+};
+
+export type SignInForm= {
+  email: string;
+  password: string;
+};
