@@ -10,7 +10,7 @@ import {
 import UserTableItem from "./UserTableItem";
 import { useEffect } from "react";
 import useStore from "../store/store";
-import { Users } from "../types/user";
+import { UserSelect, Users } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../services/api-client";
 
@@ -25,8 +25,8 @@ const UserTable = () => {
     return isUser;
   };
 
-  const isIdAvailable = (id: string) =>
-    selectedUsers.some((user) => user._id === id);
+  const isIdAvailable = (selected: UserSelect[], id: string) =>
+    selected.some((user) => user._id === id);
 
   useEffect(() => {
     getUsers(addAllUsers, checkCurrentUser);
@@ -51,7 +51,7 @@ const UserTable = () => {
               <UserTableItem
                 key={user?._id}
                 user={user}
-                isChecked={isIdAvailable(user._id)}
+                isChecked={isIdAvailable(selectedUsers, user._id)}
               />
             ))}
           </Tbody>

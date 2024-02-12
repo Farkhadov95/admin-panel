@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignInForm, SignUpForm, User, Users } from "../types/user";
+import { SignInForm, SignUpForm, User, UserStatus, Users } from "../types/user";
 
 export const apiClient = axios.create({
   baseURL: 'https://calm-woodland-21789-b98acf1fada1.herokuapp.com/api',
@@ -60,5 +60,46 @@ export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void)
       })
       .catch((err) => console.log(err));
   }
+};
+
+export const dispatchStatusChange = (data: UserStatus[]) => {
+  const token = localStorage.getItem("admin-token");
+  if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
+
+  apiClient
+    .put("/regs", data)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      return [];
+    });
+
+  return;
+};
+
+export const dispatchDeleteUsers = (data: string[], checkUser: (users: Users) => boolean, onUserCheckFail: () => void) => {
+  const token = localStorage.getItem("admin-token");
+  if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
+
+  apiClient
+    .delete("/regs", { data })
+    .then((res) => {
+      if(checkUser(res.data)) {
+        console.log(checkUser(res.data));
+        onUserCheckFail()
+        return [];
+      } else {
+        return res.data;
+      }
+      return [];
+    })
+    .catch((err) => {
+      console.log(err);
+      return [];
+    });
+
+  return;
 };
 

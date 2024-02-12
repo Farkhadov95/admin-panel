@@ -1,10 +1,5 @@
 import {create} from 'zustand';
-import { User } from '../types/user';
-
-type UserSelect = {
-    _id: string,
-    isActive: boolean,
-}
+import { User, UserSelect } from '../types/user';
 
 type State = {
     allUsers: User[],
@@ -13,6 +8,7 @@ type State = {
     removeUser: (id: string) => void;
     addAllUsers: (users: User[]) => void;
     selectAll: (users: UserSelect[]) => void;
+    updateAllUsers: (users: User[]) => void;
 }
 
 const useStore = create<State>((set) => ({
@@ -29,6 +25,9 @@ const useStore = create<State>((set) => ({
     })),
     selectAll: (users) => set(() => ({
         selectedUsers: users
+    })),
+    updateAllUsers: (updatedAllUser) => set(() => ({
+        allUsers: updatedAllUser 
     }))
 }))
 
