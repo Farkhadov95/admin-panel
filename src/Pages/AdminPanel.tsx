@@ -4,11 +4,13 @@ import Toolbar from "../components/Toolbar";
 import UserList from "../components/UserTable";
 
 const AdminPanel = () => {
-  <Box>
-    <Navbar />
-    <Toolbar />
-    <UserList />
-  </Box>;
+  return (
+    <Box>
+      <Navbar />
+      <Toolbar />
+      <UserList />
+    </Box>
+  );
 };
 
 export default AdminPanel;
