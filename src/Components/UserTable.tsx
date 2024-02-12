@@ -1,7 +1,4 @@
 import {
-  Box,
-  Button,
-  HStack,
   Table,
   TableContainer,
   Tbody,
@@ -9,17 +6,10 @@ import {
   Th,
   Thead,
   Tr,
-  Text,
 } from "@chakra-ui/react";
 import UserTableItem from "./UserTableItem";
 import apiClient from "../services/api-client";
 import { useEffect, useState } from "react";
-import {
-  MdOutlineDeleteForever,
-  MdLockOutline,
-  MdLockOpen,
-} from "react-icons/md";
-import { PiSelectionAllFill } from "react-icons/pi";
 import useStore from "../store/store";
 
 type User = {
@@ -61,32 +51,6 @@ const UserTable = () => {
 
   return (
     <>
-      <HStack
-        paddingX={10}
-        paddingY={5}
-        display={"flex"}
-        justifyContent={"space-between"}
-      >
-        <Button bgColor={"grey"} color={"white"}>
-          <PiSelectionAllFill />
-          <Text paddingLeft={1}>Select all</Text>
-        </Button>
-
-        <Box>
-          <Button bgColor={"grey"} color={"white"}>
-            <MdOutlineDeleteForever />
-            <Text paddingLeft={1}>Delete</Text>
-          </Button>
-          <Button bgColor={"red"} color={"white"} marginLeft={2}>
-            <MdLockOutline />
-            <Text paddingLeft={1}>Block</Text>
-          </Button>
-          <Button bgColor={"Green"} color={"white"} marginLeft={2}>
-            <MdLockOpen />
-            <Text paddingLeft={1}>Unblock</Text>
-          </Button>
-        </Box>
-      </HStack>
       <TableContainer paddingX={10}>
         <Table variant="striped" colorScheme={"teal.200"}>
           <Thead>
