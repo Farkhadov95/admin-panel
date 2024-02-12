@@ -9,8 +9,8 @@ import {
 const Toolbar = () => {
   return (
     <HStack
-      height={30}
-      paddingBottom={10}
+      paddingX={10}
+      paddingY={5}
       display={"flex"}
       justifyContent={"space-between"}
     >
