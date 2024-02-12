@@ -78,6 +78,7 @@ const Registration = () => {
               })}
               placeholder="example@mail.com"
               type="email"
+              required
             />
             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
           </FormControl>
@@ -93,6 +94,8 @@ const Registration = () => {
               })}
               placeholder="Password"
               type="password"
+              minLength={5}
+              maxLength={255}
             />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
@@ -108,6 +111,8 @@ const Registration = () => {
               })}
               placeholder="Password"
               type="password"
+              minLength={5}
+              maxLength={255}
             />
             <FormErrorMessage>{errors.passwordConf?.message}</FormErrorMessage>
           </FormControl>

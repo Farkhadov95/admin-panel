@@ -92,6 +92,9 @@ const Login = () => {
                 },
               })}
               placeholder="Password"
+              required
+              minLength={5}
+              maxLength={255}
               type="password"
             />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
