@@ -31,6 +31,24 @@ const dispatchStatusChange = (data: UserStatus[]) => {
   return;
 };
 
+const dispatchDeleteUsers = (data: string[]) => {
+  const token = localStorage.getItem("admin-token");
+  if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
+
+  apiClient
+    .delete("/regs", { data })
+    .then((res) => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      return [];
+    });
+
+  return;
+};
+
 const Toolbar = () => {
   const { selectedUsers } = useStore();
   const changeUsersStatus = (status: boolean) => {
@@ -43,6 +61,12 @@ const Toolbar = () => {
     dispatchStatusChange(users);
     console.log(users);
     console.log(selectedUsers);
+  };
+
+  const deleteUsers = () => {
+    const usersIds = selectedUsers.map((user) => user.id);
+    dispatchDeleteUsers(usersIds);
+    console.log(usersIds);
   };
 
   return (
@@ -58,7 +82,7 @@ const Toolbar = () => {
       </Button>
 
       <Box>
-        <Button bgColor={"grey"} color={"white"}>
+        <Button bgColor={"grey"} color={"white"} onClick={() => deleteUsers()}>
           <MdOutlineDeleteForever />
           <Text paddingLeft={1}>Delete</Text>
         </Button>
@@ -71,7 +95,12 @@ const Toolbar = () => {
           <MdLockOutline />
           <Text paddingLeft={1}>Block</Text>
         </Button>
-        <Button bgColor={"Green"} color={"white"} marginLeft={2}>
+        <Button
+          bgColor={"Green"}
+          color={"white"}
+          marginLeft={2}
+          onClick={() => changeUsersStatus(true)}
+        >
           <MdLockOpen />
           <Text paddingLeft={1}>Unblock</Text>
         </Button>
