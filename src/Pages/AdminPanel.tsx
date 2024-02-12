@@ -1,14 +1,14 @@
 import { Box } from "@chakra-ui/react";
-import Navbar from "../components/navbar";
-import Toolbar from "../components/toolbar";
-import UserList from "../components/userTable";
+import Navbar from "../components/Navbar";
+import Toolbar from "../components/Toolbar";
+import UserTable from "../components/UserTable";
 
 const AdminPanel = () => {
   return (
     <Box>
       <Navbar />
       <Toolbar />
-      <UserList />
+      <UserTable />
     </Box>
   );
 };
