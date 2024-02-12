@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const Toolbar = () => {
   const { selectedUsers, selectAll, allUsers, updateAllUsers } = useStore();
+  const navigate = useNavigate();
 
   const updateStatus = (oldUsers: Users, newUsers: UserSelect[]) => {
     console.log(oldUsers);
@@ -39,8 +40,6 @@ const Toolbar = () => {
     console.log(updatedList);
     return updatedList;
   };
-
-  const navigate = useNavigate();
 
   const checkCurrentUser = (users: Users) => {
     const currentUserID = sessionStorage.getItem("currentUser");
