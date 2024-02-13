@@ -4,16 +4,19 @@ import { User, UserSelect } from '../types/user';
 type State = {
     allUsers: User[],
     selectedUsers: UserSelect[],
+    error: string;
     addUser: (user: UserSelect) => void;
     removeUser: (id: string) => void;
     addAllUsers: (users: User[]) => void;
     selectAll: (users: UserSelect[]) => void;
     updateAllUsers: (users: User[]) => void;
+    addError: (error: string) => void;
 }
 
 const useStore = create<State>((set) => ({
     allUsers: [],
     selectedUsers: [],
+    error: '',
     addUser: (user) => set((state) => ({
         selectedUsers: [...state.selectedUsers, user]
     })),
@@ -28,6 +31,9 @@ const useStore = create<State>((set) => ({
     })),
     updateAllUsers: (updatedAllUser) => set(() => ({
         allUsers: updatedAllUser 
+    })),
+    addError: (error) => set(() => ({
+        error: error
     }))
 }))
 

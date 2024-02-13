@@ -8,7 +8,8 @@ export const apiClient = axios.create({
 
 export const getUsers = async (
   onSuccess: (data: Users) => void,
-  checkUser: (data: Users) => boolean
+  checkUser: (data: Users) => boolean,
+  onFail: (data: string) => void,
 ) => {
   const token = localStorage.getItem("admin-token");
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
@@ -25,13 +26,14 @@ export const getUsers = async (
     })
     .catch((err) => {
       console.log(err);
+      onFail(err.message);
       return [];
     });
 
   return result;
 };
 
-export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void) => {
+export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void, onFailUtil: (data: string, showError: (data: string) => void) => void, onFail: (data: string) => void) => {
   apiClient
     .post("/regs", {
       email: data.email,
@@ -43,10 +45,13 @@ export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void)
       localStorage.setItem("admin-token", token);
       onSuccess(res.data);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      onFailUtil(err.response.data, onFail);
+    });
 };
 
-export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void) => {
+export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void, onFailUtil: (data: string, showError: (data: string) => void) => void, onFail: (data: string) => void) => {
   const token = localStorage.getItem("admin-token");
   if (token) {
     apiClient
@@ -58,7 +63,9 @@ export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void)
         console.log(res.data);
         onSuccess(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        onFailUtil(err.response.data, onFail);
+      });
   }
 };
 

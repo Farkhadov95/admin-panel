@@ -11,10 +11,13 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { SignUpForm, User } from "../types/user";
 import { signUp } from "../services/api-client";
+import useStore from "../store/store";
+import { errorWithTimer } from "../utils";
 
 const Registration = () => {
   const { register, handleSubmit, formState } = useForm<SignUpForm>();
   const { errors } = formState;
+  const { error, addError } = useStore();
   const navigate = useNavigate();
   const transferOnSuccess = (user: User) => {
     sessionStorage.setItem("currentUser", user._id);
@@ -23,7 +26,7 @@ const Registration = () => {
 
   const onSubmit = (data: SignUpForm) => {
     console.log(data);
-    signUp(data, transferOnSuccess);
+    signUp(data, transferOnSuccess, errorWithTimer, addError);
   };
 
   return (
@@ -32,8 +35,25 @@ const Registration = () => {
       width={"100vl"}
       height={"100vh"}
       boxSizing={"border-box"}
-      padding={"20vh"}
+      paddingTop={"20vh"}
     >
+      {error !== "" && (
+        <Box
+          width={"100%"}
+          height={"50px"}
+          bgColor={"red"}
+          padding={"10px"}
+          paddingX={"30px"}
+          color={"white"}
+          fontSize={"20px"}
+          fontWeight={"bold"}
+          position={"absolute"}
+          top={"0"}
+          zIndex={"1"}
+        >
+          {error}
+        </Box>
+      )}
       <Box
         width={"500px"}
         bgColor={"white"}

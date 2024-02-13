@@ -11,9 +11,12 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInForm, User } from "../types/user";
 import { signIn } from "../services/api-client";
+import useStore from "../store/store";
+import { errorWithTimer } from "../utils";
 
 const Login = () => {
   const { register, handleSubmit, formState } = useForm<SignInForm>();
+  const { error, addError } = useStore();
   const { errors } = formState;
   const navigate = useNavigate();
   const transferOnSuccess = (user: User) => {
@@ -22,8 +25,7 @@ const Login = () => {
   };
 
   const onSubmit = (data: SignInForm) => {
-    console.log(data);
-    signIn(data, transferOnSuccess);
+    signIn(data, transferOnSuccess, errorWithTimer, addError);
   };
 
   return (
@@ -32,12 +34,30 @@ const Login = () => {
       width={"100vl"}
       height={"100vh"}
       boxSizing={"border-box"}
-      padding={"20vh"}
+      paddingTop={"20vh"}
     >
+      {error !== "" && (
+        <Box
+          width={"100%"}
+          height={"50px"}
+          bgColor={"red"}
+          padding={"10px"}
+          paddingX={"30px"}
+          color={"white"}
+          fontSize={"20px"}
+          fontWeight={"bold"}
+          position={"absolute"}
+          top={"0"}
+          zIndex={"1"}
+        >
+          {error}
+        </Box>
+      )}
       <Box
         width={"500px"}
         bgColor={"white"}
         padding={10}
+        // marginTop={"20vh"}
         borderRadius={10}
         marginX={"auto"}
       >
