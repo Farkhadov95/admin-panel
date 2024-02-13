@@ -9,7 +9,6 @@ export const apiClient = axios.create({
 export const getUsers = async (
   onSuccess: (data: Users) => void,
   checkUser: (data: Users) => boolean,
-  onFail: (data: string) => void,
 ) => {
   const token = localStorage.getItem("admin-token");
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
@@ -26,7 +25,6 @@ export const getUsers = async (
     })
     .catch((err) => {
       console.log(err);
-      onFail(err.message);
       return [];
     });
 
