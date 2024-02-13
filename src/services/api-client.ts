@@ -67,7 +67,9 @@ export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void,
   }
 };
 
-export const dispatchStatusChange = (data: UserStatus[]) => {
+export const dispatchStatusChange = (
+  data: UserStatus[],
+) => {
   const token = localStorage.getItem("admin-token");
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
 
@@ -84,21 +86,19 @@ export const dispatchStatusChange = (data: UserStatus[]) => {
   return;
 };
 
-export const dispatchDeleteUsers = (data: string[], checkUser: (users: Users) => boolean, onUserCheckFail: () => void) => {
+export const dispatchDeleteUsers = (data: string[], isCurrentUserDeleted: (users: Users) => boolean, onUserCheckFail: () => void) => {
   const token = localStorage.getItem("admin-token");
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
 
   apiClient
     .delete("/regs", { data })
     .then((res) => {
-      if(checkUser(res.data)) {
-        console.log(checkUser(res.data));
+      if(isCurrentUserDeleted(res.data)) {
         onUserCheckFail()
         return [];
       } else {
         return res.data;
       }
-      return [];
     })
     .catch((err) => {
       console.log(err);

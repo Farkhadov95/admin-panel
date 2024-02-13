@@ -16,9 +16,9 @@ import { useNavigate } from "react-router-dom";
 const Toolbar = () => {
   const { selectedUsers, selectAll, allUsers, updateAllUsers } = useStore();
   const navigate = useNavigate();
+  const onUserCheckFail = () => navigate("/");
 
   const updateStatus = (oldUsers: Users, newUsers: UserSelect[]) => {
-    console.log(oldUsers);
     const updatedList = oldUsers.map((user) => {
       const newUser = newUsers.find((newUser) => newUser._id === user._id);
       if (newUser) {
@@ -27,7 +27,6 @@ const Toolbar = () => {
         return user;
       }
     });
-    console.log(updatedList);
     return updatedList;
   };
 
@@ -41,26 +40,35 @@ const Toolbar = () => {
     return updatedList;
   };
 
-  const checkCurrentUser = (users: Users) => {
+  const isCurrentUserDeleted = (deletedUsers: Users) => {
     const currentUserID = sessionStorage.getItem("currentUser");
-    const isUser = users.some((user) => user._id === currentUserID);
+    const isUser = deletedUsers.some((user) => user._id === currentUserID);
     return isUser;
   };
 
-  const onUserCheckFail = () => navigate("/");
+  const checkCurrentUser = (users: Users) => {
+    const currentUserID = sessionStorage.getItem("currentUser");
+    const isUserActive = users.find(
+      (user) => user._id === currentUserID
+    )?.isActive;
+
+    if (!isUserActive) navigate("/");
+  };
 
   const handleStatus = (status: boolean) => {
     const updatedUsers = selectedUsers.map((user) => ({
       ...user,
       isActive: status,
     }));
+    const newList = updateStatus(allUsers, updatedUsers);
     dispatchStatusChange(updatedUsers);
-    updateAllUsers(updateStatus(allUsers, updatedUsers));
+    updateAllUsers(newList);
+    checkCurrentUser(newList);
   };
 
   const handleDelete = () => {
     const usersIds = selectedUsers.map((user) => user._id);
-    dispatchDeleteUsers(usersIds, checkCurrentUser, onUserCheckFail);
+    dispatchDeleteUsers(usersIds, isCurrentUserDeleted, onUserCheckFail);
     updateAllUsers(updatedUsersList(allUsers, selectedUsers));
   };
 

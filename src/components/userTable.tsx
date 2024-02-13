@@ -18,11 +18,18 @@ const UserTable = () => {
   const { addAllUsers, allUsers, selectedUsers } = useStore();
   const navigate = useNavigate();
 
-  const checkCurrentUser = (users: Users) => {
+  const checkCurrentUser = (users: Users): boolean => {
     const currentUserID = sessionStorage.getItem("currentUser");
     const isUser = users.some((user) => user._id === currentUserID);
-    if (!isUser) navigate("/");
-    return isUser;
+    const isUserActive = users.find(
+      (user) => user._id === currentUserID
+    )?.isActive;
+
+    if (!isUserActive || !isUser) {
+      navigate("/");
+      return false;
+    }
+    return true;
   };
 
   const isIdAvailable = (selected: UserSelect[], id: string) =>

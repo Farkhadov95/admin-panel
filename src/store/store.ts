@@ -4,6 +4,8 @@ import { User, UserSelect } from '../types/user';
 type State = {
     allUsers: User[],
     selectedUsers: UserSelect[],
+    blockedUsers: User[],
+    userStatus: boolean,
     error: string;
     addUser: (user: UserSelect) => void;
     removeUser: (id: string) => void;
@@ -11,11 +13,15 @@ type State = {
     selectAll: (users: UserSelect[]) => void;
     updateAllUsers: (users: User[]) => void;
     addError: (error: string) => void;
+    updateBlockedUsers: (users: User[]) => void;
+    changeUserStatus: (status: boolean) => void;
 }
 
 const useStore = create<State>((set) => ({
     allUsers: [],
     selectedUsers: [],
+    blockedUsers: [],
+    userStatus: true,
     error: '',
     addUser: (user) => set((state) => ({
         selectedUsers: [...state.selectedUsers, user]
@@ -34,6 +40,12 @@ const useStore = create<State>((set) => ({
     })),
     addError: (error) => set(() => ({
         error: error
+    })),
+    updateBlockedUsers: (users) => set(() => ({
+        blockedUsers: users
+    })),
+    changeUserStatus: (status) => set(() => ({
+        userStatus: status
     }))
 }))
 
