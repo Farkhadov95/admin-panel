@@ -20,7 +20,6 @@ export const getUsers = async (
         onSuccess(res.data);
         return res.data;
       }
-      console.log(res.data);
       return [];
     })
     .catch((err) => {
