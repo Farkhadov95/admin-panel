@@ -1,6 +1,7 @@
 import { Checkbox, Td, Tr } from "@chakra-ui/react";
 import { User } from "../types/user";
 import useStore from "../store/store";
+import moment from "moment";
 
 type UserProp = {
   user: User;
@@ -27,8 +28,8 @@ const UserTableItem = ({ user, isChecked }: UserProp) => {
       </Td>
       <Td>{_id}</Td>
       <Td>{email}</Td>
-      <Td>{logTime.toLocaleString()}</Td>
-      <Td>{regTime.toLocaleString()}</Td>
+      <Td>{moment(logTime).format("MMMM Do YYYY, h:mm:ss a")}</Td>
+      <Td>{moment(regTime).format("MMMM Do YYYY, h:mm:ss a")}</Td>
       <Td>{isActive ? "Active" : "Blocked"}</Td>
     </Tr>
   );
