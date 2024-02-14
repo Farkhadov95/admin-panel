@@ -1,5 +1,4 @@
-import { Box, Button, HStack, Text } from "@chakra-ui/react";
-import { PiSelectionAllFill } from "react-icons/pi";
+import { Box, Button, Checkbox, HStack, Text } from "@chakra-ui/react";
 import {
   MdOutlineDeleteForever,
   MdLockOutline,
@@ -12,6 +11,7 @@ import {
 } from "../services/api-client";
 import { UserSelect, Users } from "../types/user";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Toolbar = () => {
   const { selectedUsers, selectAll, allUsers, updateAllUsers } = useStore();
@@ -84,6 +84,23 @@ const Toolbar = () => {
     selectAll(adaptedUsers);
   };
 
+  const handleUnselectAll = () => {
+    selectAll([]);
+  };
+
+  const [checkedStatus, setCheckedStatus] = useState(false);
+  const manageSelectAll = () => {
+    setCheckedStatus((prevCheckedStatus) => {
+      const newCheckedStatus = !prevCheckedStatus;
+      if (newCheckedStatus) {
+        handleSelectAll();
+      } else {
+        handleUnselectAll();
+      }
+      return newCheckedStatus;
+    });
+  };
+
   return (
     <HStack
       paddingX={10}
@@ -91,8 +108,13 @@ const Toolbar = () => {
       display={"flex"}
       justifyContent={"space-between"}
     >
-      <Button bgColor={"grey"} color={"white"} onClick={handleSelectAll}>
-        <PiSelectionAllFill />
+      <Button
+        as={Checkbox}
+        bgColor={"grey"}
+        color={"white"}
+        isChecked={checkedStatus}
+        onChange={() => manageSelectAll()}
+      >
         <Text paddingLeft={1}>Select all</Text>
       </Button>
 
