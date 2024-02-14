@@ -8,7 +8,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SignUpForm, User } from "../types/user";
 import { signUp } from "../services/api-client";
 import useStore from "../store/store";
@@ -125,7 +125,7 @@ const Registration = () => {
             <FormErrorMessage>{errors.passwordConf?.message}</FormErrorMessage>
           </FormControl>
           <Box display={"flex"} justifyContent={"space-between"}>
-            <Button as={Link} to={"/"}>
+            <Button as={NavLink} to={"/"}>
               Back
             </Button>
             <Input

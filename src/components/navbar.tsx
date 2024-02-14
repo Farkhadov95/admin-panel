@@ -1,5 +1,5 @@
 import { Button, HStack, Text } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Navbar = () => {
         Admin Panel
       </Text>
       <Button
-        as={Link}
+        as={NavLink}
         to={"/"}
         fontWeight={"Bold"}
         textDecoration={"none"}

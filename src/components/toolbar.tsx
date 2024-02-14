@@ -43,6 +43,9 @@ const Toolbar = () => {
   const isCurrentUserDeleted = (deletedUsers: Users) => {
     const currentUserID = sessionStorage.getItem("currentUser");
     const isUser = deletedUsers.some((user) => user._id === currentUserID);
+    if (isUser) localStorage.removeItem("admin-token");
+    if (isUser) sessionStorage.removeItem("currentUser");
+
     return isUser;
   };
 
@@ -52,7 +55,10 @@ const Toolbar = () => {
       (user) => user._id === currentUserID
     )?.isActive;
 
-    if (!isUserActive) navigate("/");
+    if (!isUserActive) {
+      sessionStorage.removeItem("currentUser");
+      navigate("/");
+    }
   };
 
   const handleStatus = (status: boolean) => {

@@ -12,7 +12,7 @@ export const getUsers = async (
 ) => {
   const token = localStorage.getItem("admin-token");
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
-
+  
   const result = apiClient
     .get("/regs")
     .then((res) => {
@@ -26,7 +26,6 @@ export const getUsers = async (
       console.log(err);
       return [];
     });
-
   return result;
 };
 
