@@ -13,9 +13,10 @@ import useStore from "../store/store";
 import { UserSelect, Users } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../services/api-client";
+import { errorWithTimer } from "../utils";
 
 const UserTable = () => {
-  const { addAllUsers, allUsers, selectedUsers } = useStore();
+  const { addAllUsers, allUsers, selectedUsers, addError } = useStore();
   const navigate = useNavigate();
 
   const checkCurrentUser = (users: Users): boolean => {
@@ -36,7 +37,7 @@ const UserTable = () => {
     selected.some((user) => user._id === id);
 
   useEffect(() => {
-    getUsers(addAllUsers, checkCurrentUser);
+    getUsers(addAllUsers, checkCurrentUser, errorWithTimer, addError);
   }, [addAllUsers]);
 
   return (

@@ -9,6 +9,8 @@ export const apiClient = axios.create({
 export const getUsers = async (
   onSuccess: (data: Users) => void,
   checkUser: (data: Users) => boolean,
+  onFailUtil: (data: string, showError: (data: string) => void) => void,
+  onFail: (data: string) => void
 ) => {
   const token = localStorage.getItem("admin-token");
   const email = localStorage.getItem('currentUserEmail');
@@ -25,20 +27,27 @@ export const getUsers = async (
       return [];
     })
     .catch((err) => {
-      console.log(err);
+      err.response.data ? 
+        onFailUtil(err.response?.data, onFail) : 
+        onFailUtil("Something went wrong", onFail);
+      
       return [];
     });
   return result;
 };
 
-export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void, onFailUtil: (data: string, showError: (data: string) => void) => void, onFail: (data: string) => void) => {
+export const signUp = (
+    data: SignUpForm,
+    onSuccess: (currentUser: User) => void,
+    onFailUtil: (data: string, showError: (data: string) => void) => void,
+    onFail: (data: string) => void
+  ) => {
   apiClient
     .post("/regs", {
       email: data.email,
       password: data.password,
     })
     .then((res) => {
-      console.log(res.data);
       const token = res.data.token;
       const email = res.data.email;
       localStorage.setItem("admin-token", token);
@@ -46,12 +55,16 @@ export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void,
       onSuccess(res.data);
     })
     .catch((err) => {
-      console.log(err);
       onFailUtil(err.response.data, onFail);
     });
 };
 
-export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void, onFailUtil: (data: string, showError: (data: string) => void) => void, onFail: (data: string) => void) => {
+export const signIn = (
+    data: SignInForm,
+    onSuccess: (currentUser: User) => void,
+    onFailUtil: (data: string, showError: (data: string) => void) => void,
+    onFail: (data: string) => void
+  ) => {
   const token = localStorage.getItem("admin-token");
   const email = localStorage.getItem('currentUserEmail');
   if (email) apiClient.defaults.headers.common["current-user-email"] = `${email}`;
@@ -70,11 +83,15 @@ export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void,
       .catch((err) => {
         onFailUtil(err.response.data, onFail);
       });
+  } else {
+    onFailUtil("Please sign up first", onFail);
   }
 };
 
 export const dispatchStatusChange = (
   data: UserStatus[],
+  onFailUtil: (data: string, showError: (data: string) => void) => void,
+  onFail: (data: string) => void
 ) => {
   const token = localStorage.getItem("admin-token");
   const email = localStorage.getItem('currentUserEmail');
@@ -87,14 +104,20 @@ export const dispatchStatusChange = (
       return res.data;
     })
     .catch((err) => {
-      console.log(err);
+      onFailUtil(err.response.data, onFail);
       return [];
     });
 
   return;
 };
 
-export const dispatchDeleteUsers = (data: string[], isCurrentUserDeleted: (users: Users) => boolean, onUserCheckFail: () => void) => {
+export const dispatchDeleteUsers = (
+    data: string[],
+    isCurrentUserDeleted: (users: Users) => boolean,
+    onUserCheckFail: () => void,
+    onFailUtil: (data: string, showError: (data: string) => void) => void,
+    onFail: (data: string) => void
+  ) => {
   const token = localStorage.getItem("admin-token");
   const email = localStorage.getItem('currentUserEmail');
   if (email) apiClient.defaults.headers.common["current-user-email"] = `${email}`;
@@ -111,7 +134,7 @@ export const dispatchDeleteUsers = (data: string[], isCurrentUserDeleted: (users
       }
     })
     .catch((err) => {
-      console.log(err);
+      onFailUtil(err.response.data, onFail);
       return [];
     });
 

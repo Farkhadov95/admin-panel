@@ -12,9 +12,11 @@ import {
 import { UserSelect, Users } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { errorWithTimer } from "../utils";
 
 const Toolbar = () => {
-  const { selectedUsers, selectAll, allUsers, updateAllUsers } = useStore();
+  const { selectedUsers, selectAll, allUsers, updateAllUsers, addError } =
+    useStore();
   const navigate = useNavigate();
   const onUserCheckFail = () => navigate("/");
 
@@ -67,14 +69,20 @@ const Toolbar = () => {
       isActive: status,
     }));
     const newList = updateStatus(allUsers, updatedUsers);
-    dispatchStatusChange(updatedUsers);
+    dispatchStatusChange(updatedUsers, errorWithTimer, addError);
     updateAllUsers(newList);
     checkCurrentUser(newList);
   };
 
   const handleDelete = () => {
     const usersIds = selectedUsers.map((user) => user._id);
-    dispatchDeleteUsers(usersIds, isCurrentUserDeleted, onUserCheckFail);
+    dispatchDeleteUsers(
+      usersIds,
+      isCurrentUserDeleted,
+      onUserCheckFail,
+      errorWithTimer,
+      addError
+    );
     updateAllUsers(updatedUsersList(allUsers, selectedUsers));
   };
 
