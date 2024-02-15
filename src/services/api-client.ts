@@ -11,6 +11,8 @@ export const getUsers = async (
   checkUser: (data: Users) => boolean,
 ) => {
   const token = localStorage.getItem("admin-token");
+  const email = localStorage.getItem('currentUserEmail');
+  if (email) apiClient.defaults.headers.common["current-user-email"] = `${email}`;
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
   
   const result = apiClient
@@ -38,7 +40,9 @@ export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void,
     .then((res) => {
       console.log(res.data);
       const token = res.data.token;
+      const email = res.data.email;
       localStorage.setItem("admin-token", token);
+      localStorage.setItem('currentUserEmail', email);
       onSuccess(res.data);
     })
     .catch((err) => {
@@ -49,6 +53,10 @@ export const signUp = (data: SignUpForm, onSuccess: (currentUser: User) => void,
 
 export const signIn = (data: SignInForm, onSuccess: (currentUser: User) => void, onFailUtil: (data: string, showError: (data: string) => void) => void, onFail: (data: string) => void) => {
   const token = localStorage.getItem("admin-token");
+  const email = localStorage.getItem('currentUserEmail');
+  if (email) apiClient.defaults.headers.common["current-user-email"] = `${email}`;
+  if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
+
   if (token) {
     apiClient
       .post("/auth", {
@@ -69,6 +77,8 @@ export const dispatchStatusChange = (
   data: UserStatus[],
 ) => {
   const token = localStorage.getItem("admin-token");
+  const email = localStorage.getItem('currentUserEmail');
+  if (email) apiClient.defaults.headers.common["current-user-email"] = `${email}`;
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
 
   apiClient
@@ -86,6 +96,8 @@ export const dispatchStatusChange = (
 
 export const dispatchDeleteUsers = (data: string[], isCurrentUserDeleted: (users: Users) => boolean, onUserCheckFail: () => void) => {
   const token = localStorage.getItem("admin-token");
+  const email = localStorage.getItem('currentUserEmail');
+  if (email) apiClient.defaults.headers.common["current-user-email"] = `${email}`;
   if (token) apiClient.defaults.headers.common["x-auth-token"] = `${token}`;
 
   apiClient
